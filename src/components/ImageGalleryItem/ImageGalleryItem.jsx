@@ -1,11 +1,12 @@
 import React from "react";
+import { ItemGallery, Img } from "./ImageGalleryItem.styled"
 
-export const ImageGalleryItems = ({ webformatURL, largeImageURL, onClick }) => {
+export const ImageGalleryItem = ({ webformatURL, largeImageURL, onClick }) => {
 
     return (
-        <li>
-            <img src={webformatURL} onClick={() => onClick(largeImageURL)}alt="" />
-        </li>
+        <ItemGallery>
+            <Img src={webformatURL} onClick={() => onClick(largeImageURL)} alt="" />
+        </ItemGallery>
     )
 
 }
