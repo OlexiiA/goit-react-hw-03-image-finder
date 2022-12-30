@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { Overlay, ModalWindow } from "./Modal.styled"
+
 export class Modal extends Component {
 
   static propTypes = {

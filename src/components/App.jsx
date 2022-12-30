@@ -4,9 +4,10 @@ import { Searchbar } from './Searchbar/Searchbar'
 import { Modal } from "./Modal/Modal";
 import { fetchImg } from "../services/api";
 import { Button } from "./Button/Button";
+import { Loader } from "./Loader/Loader"
 import { Wrapper } from "./App.styled";
-import {Loader} from "./Loader/Loader"
-// import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export class App extends Component {
@@ -26,7 +27,7 @@ export class App extends Component {
         this.setState({ status: 'loading' })
         const res = await fetchImg(search, page);
         if (res.data.total === 0) {
-          throw alert('Images with your querry was not found');
+          throw new Error('Images with your query was not found');
         }
         this.setState(prevState => ({
           images: [...prevState.images, ...res.data.hits],
@@ -35,6 +36,17 @@ export class App extends Component {
       }
 
     } catch (error) {
+      toast.error(error.message, {
+        position: "top-center",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      this.setState({ status: 'idle' });
 
     }
   }
@@ -65,10 +77,11 @@ export class App extends Component {
     return (
       <Wrapper>
         <Searchbar onSubmit={this.hadleSubmit} />
-        <ImageGallery images={images} onClick={this.toggleModal}/>
+        <ImageGallery images={images} onClick={this.toggleModal} />
         {status === 'loading' && <Loader />}
         {status === 'finished' && <Button loadMore={this.loadMore} />}
-        {modalImg && <Modal image={this.modalImg} onModalClose={this.toggleModal} />}
+        {modalImg && <Modal image={modalImg} onModalClose={this.toggleModal} />}
+        <ToastContainer />
       </Wrapper>
     )
   }
